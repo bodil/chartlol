@@ -6,7 +6,7 @@ app = express.createServer()
 app.configure ->
   app.register ".eco", eco
   app.set "views", "#{__dirname}/views"
-  app.set "view engine", "eco"
+  app.set "view engine", "jade"
   app.use express.bodyParser()
   app.use express.cookieParser()
   app.use express.session
