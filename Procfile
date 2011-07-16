@@ -1,1 +1,1 @@
-web: coffee run.coffee
+web: node run.js
