@@ -59,7 +59,8 @@ validate_credentials = (req, res) ->
     [u, p]
 
 app.get '/', (req, res) ->
-  res.redirect "/login"
+  res.render "index", local req,
+    title: null
 
 app.get '/login', (req, res) ->
   res.render "login", local req,
@@ -71,7 +72,6 @@ app.post '/login', (req, res) ->
     model.User.findOne user: u, (err, user) =>
       if not err
         if user
-          console.log user
           if hash.verify p, user.password
             req.session.user = user.user
             res.redirect '/'

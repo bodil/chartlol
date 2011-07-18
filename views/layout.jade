@@ -2,7 +2,10 @@
 html(lang="en")
   head
     meta(charset="utf-8")
-    title Chartlol - #{title}
+    - if (title)
+      title Chartlol - #{title}
+    - else
+      title Chartlol
     meta(name="description", content="")
     meta(name="author", content="")
     meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
@@ -15,7 +18,12 @@ html(lang="en")
   body
     div.container
       div.sixteen.columns.sitebar
-        span.left Chartlol&nbsp;-&nbsp;#{title}
+        span.left
+          - if (title)
+            a(href="/") Chartlol
+            | &nbsp;-&nbsp;#{title}
+          - else
+            a(href="/") Chartlol
         span.right
           - if (session.user)
             | #{session.user}
@@ -26,5 +34,3 @@ html(lang="en")
           div.error-msg
             p= msg
       != body
-      div.sixteen.columns
-        blockquote #{JSON.stringify(session)}
