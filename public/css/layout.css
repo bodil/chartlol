@@ -31,6 +31,16 @@
       div.small-print.left, div.small-print.right {
           display: none;
       }
+
+      div.businesscat {
+          background: inherit !important;
+          padding-top: inherit !important;
+      }
+
+      div.mobile-businesscat {
+          background: url("/img/businesscat.png") no-repeat top center;
+          padding-top: 268px;
+      }
   }
 
   /* Mobile Landscape/Browser */
