@@ -27,7 +27,11 @@
   @media only screen and (min-width: 768px) and (max-width: 991px) {}
 
   /* Mobile/Browser */
-  @media only screen and (max-width: 767px) {}
+  @media only screen and (max-width: 767px) {
+      div.small-print.left, div.small-print.right {
+          display: none;
+      }
+  }
 
   /* Mobile Landscape/Browser */
   @media only screen and (min-width: 480px) and (max-width: 767px) {}
