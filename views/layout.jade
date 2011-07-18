@@ -23,7 +23,8 @@ html(lang="en")
             a(href="/login") Login
       - if (msg)
         div.eight.columns.offset-by-four
-          p.error-msg #{msg}
+          div.error-msg
+            p= msg
       != body
       div.sixteen.columns
         blockquote #{JSON.stringify(session)}
