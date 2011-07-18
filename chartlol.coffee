@@ -1,16 +1,23 @@
 express = require 'express'
-eco = require 'eco'
 stylus = require 'stylus'
+hash = require 'password-hash'
+mongoose = require 'mongoose'
+sessionStore = require("connect-mongoose")(express)
+model = require './model'
+
+mongo_uri = process.env.MONGOLAB_URI || "mongodb://localhost/chartlol"
+console.log "Connecting to #{mongo_uri}"
+mongoose.connect mongo_uri
 
 app = express.createServer()
 app.configure ->
-  app.register ".eco", eco
   app.set "views", "#{__dirname}/views"
   app.set "view engine", "jade"
   app.use express.bodyParser()
   app.use express.cookieParser()
   app.use express.session
     secret: "foo"
+    store: new sessionStore()
   app.use stylus.middleware
     src: "#{__dirname}/public"
   app.use app.router
@@ -24,9 +31,99 @@ app.configure "development", ->
 app.configure "production", ->
   app.use express.errorHandler()
 
+extend = (one, two) ->
+  one[key] = value for own key, value of two
+  one
+
+local = (req, context) ->
+  if req.session.msg
+    context.msg = req.session.msg
+    req.session.msg = null
+  else
+    context.msg = null
+  extend context,
+    session: req.session
+
+valid_user = (u) ->
+  /^[a-zA-Z0-9_]{3,24}$/.test u
+
+valid_password = (p) ->
+  /^.{6,24}$/.test p
+
+validate_credentials = (req, res) ->
+  u = req.param "username"
+  p = req.param "password"
+  if not valid_user u
+    req.session.msg = "Username must be at least 3 characters long, and can only contain letters, numbers and underscores."
+    res.redirect '/login'
+    [null, null]
+  else if not valid_password p
+    req.session.msg = "Password must be at least 6 characters long."
+    res.redirect '/login'
+    [null, null]
+  else
+    [u, p]
+
 app.get '/', (req, res) ->
-  res.render "index",
-    title: "ohai"
+  res.redirect "/login"
+
+app.get '/login', (req, res) ->
+  res.render "login", local req,
+    title: "Login"
+
+app.post '/login', (req, res) ->
+  [u, p] = validate_credentials req, res
+  if u
+    model.User.findOne user: u, (err, user) =>
+      if not err
+        if user
+          console.log user
+          if hash.verify p, user.password
+            req.session.user = user.user
+            res.redirect '/'
+          else
+            req.session.msg = "Incorrect password for username. Try a different username?"
+            req.session.user = null
+            res.redirect '/login'
+        else
+          req.session.tmp_password_hash = hash.generate p
+          req.session.tmp_username = u
+          res.redirect '/register'
+      else
+        throw err
+
+app.get '/register', (req, res) ->
+  res.render "register", local req,
+    title: "New User"
+    username: req.session.tmp_username
+
+app.post '/register', (req, res) ->
+  [u, p] = validate_credentials req, res
+  if u
+    model.User.findOne user: (req.param "username"), (err, user) =>
+      if not err
+        if user
+          req.session.msg = "That username is already taken. Try again with another username."
+          res.redirect '/login'
+        else
+          if hash.verify (req.param "password"), req.session.tmp_password_hash
+            user = new model.User
+              user: req.session.tmp_username
+              password: req.session.tmp_password_hash
+            req.session.tmp_username = req.session.tmp_password_hash = null
+            user.save (err) ->
+              if err
+                session.msg = "That username is already taken. Try again with another username."
+                redirect '/login'
+              else
+                req.session.user = user.user
+                res.redirect '/'
+          else
+            req.session.msg = "Your passwords don't match. I'm afraid you're going to have to start over."
+            req.session.user = null
+            res.redirect '/login'
+      else
+        throw err
 
 app.listen parseInt(process.env.PORT, 10) || 1337
 console.log "Listening on port #{app.address().port} in #{app.settings.env} mode"

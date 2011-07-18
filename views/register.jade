@@ -1,0 +1,26 @@
+div.eight.columns.offset-by-four
+  h1 New User!
+  hr
+  p
+    | That's a new username! Now enter that password again to make sure we both
+    | got it right.
+
+form.eight.columns.offset-by-four.clearfix.login-box(method="post", action="/register")
+    div.two.columns.alpha: label(for="username") Username:
+    div.six.columns.omega: input#username(type="text", name="username", value="#{username}", readonly)
+    div.two.columns.alpha: label(for="password") Password (again):
+    div.six.columns.omega: input#password(type="password", name="password")
+    div.two.columns.alpha &nbsp;
+    div.six.columns.omega: button.full-width(type="submit") Register your account
+
+div.eight.columns.offset-by-four
+  hr
+  h3 Terms of Service
+  p
+    strong tl;dr:
+    |  None of the information you store on this site is private, except your
+    | password. Don't give us any info you're not comfortable sharing with
+    | the whole world.
+
+script
+  $("#password").focus()

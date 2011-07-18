@@ -1,0 +1,36 @@
+@import "mixins"
+
+body
+  background url("/img/background.png") repeat-x fixed top
+
+div.sitebar
+  background-linear-gradient(top, #777, 0%, #111, 100%, left top, left bottom)
+  color white
+  padding-top 0.5em
+  padding-bottom 0.5em
+  text-align left
+  margin-bottom 1em
+  font-family "Georgia", "Times New Roman", Helvetica, Arial, sans-serif
+  font-size 1.5em
+
+  a
+    color white
+
+  & span.left
+    margin-left 0.5em
+  
+  & span.right
+    float right
+    margin-right 0.5em
+
+form.login-box
+  margin-bottom 0px
+
+  & input[type="text"],
+  & input[type="password"],
+  & input[type="email"]
+    width 97%
+
+p.error-msg
+  padding: 1em 2em;
+  background: red;

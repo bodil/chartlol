@@ -1,6 +1,6 @@
 {
     "name": "chartlol",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "dependencies": {
         "coffee-script": "1.1.1",
         "password-hash": "1.1.0",
@@ -8,6 +8,6 @@
         "express": "2.4.3",
         "stylus": "0.13.7",
         "jade": "0.13.0",
-        "eco": "1.1.0-rc-1"
+        "connect-mongoose": "0.0.1"
     }
 }
