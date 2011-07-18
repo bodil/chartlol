@@ -2,7 +2,7 @@
     "name": "chartlol",
     "version": "0.0.3",
     "dependencies": {
-        "coffee-script": "",
+        "coffee-script": "1.0.0",
         "password-hash": "",
         "mongoose": "",
         "express": "",
