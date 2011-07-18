@@ -44,20 +44,14 @@ local = (req, context) ->
   extend context,
     session: req.session
 
-valid_user = (u) ->
-  /^[a-zA-Z0-9_]{3,24}$/.test u
-
-valid_password = (p) ->
-  /^.{6,24}$/.test p
-
 validate_credentials = (req, res) ->
   u = req.param "username"
   p = req.param "password"
-  if not valid_user u
+  if not /^[a-zA-Z0-9_]{3,24}$/.test u
     req.session.msg = "Username must be at least 3 characters long, and can only contain letters, numbers and underscores."
     res.redirect '/login'
     [null, null]
-  else if not valid_password p
+  else if not /^.{6,24}$/.test p
     req.session.msg = "Password must be at least 6 characters long."
     res.redirect '/login'
     [null, null]
