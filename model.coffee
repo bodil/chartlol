@@ -15,7 +15,7 @@ User = module.exports.User = mongoose.model "User"
 
 mongoose.model "Chart", new Schema
   owner:
-    type: ObjectId
+    type: String
     required: true
     index: true
   title:
@@ -24,8 +24,23 @@ mongoose.model "Chart", new Schema
 
 Chart = module.exports.Chart = mongoose.model "Chart"
 
-schema_Point = new Schema
+schema_Dataset = new Schema
   chart:
+    type: ObjectId
+    required: true
+    index: true
+  title:
+    type: String
+    required: true
+  unit:
+    type: String
+    required: true
+
+mongoose.model "Dataset", schema_Dataset
+Dataset = module.exports.Dataset = mongoose.model "Dataset"
+
+schema_Point = new Schema
+  dataset:
     type: ObjectId
     required: true
     index: true
@@ -36,7 +51,7 @@ schema_Point = new Schema
     type: Number
     required: true
 schema_Point.index
-  chart: 1
+  dataset: 1
   stamp: 1
 
 mongoose.model "Point", schema_Point
