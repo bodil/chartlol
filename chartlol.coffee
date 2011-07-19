@@ -59,8 +59,17 @@ validate_credentials = (req, res) ->
     [u, p]
 
 app.get '/', (req, res) ->
-  res.render "index", local req,
-    title: null
+  if req.session.user
+    model.Chart.find { owner: req.session.user }, (err, charts) ->
+      if not err
+        res.render "index", local req,
+          title: null
+          charts: charts
+      else
+        throw err
+  else
+    res.render "landing", local req,
+      title: null
 
 app.get '/login', (req, res) ->
   res.render "login", local req,
