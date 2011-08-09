@@ -1,4 +1,5 @@
-spawn_command = "node chartlol.js"
+app_target = "chartlol.js"
+spawn_command = "node #{app_target}"
 
 ignore = [ /^node_modules|public$/ ]
 zappa_files = []
@@ -175,9 +176,11 @@ class Launcher
                     return
                 else
                     throw error
-            if process.env.APP_ENV isnt "heroku"
+            if process.env.APP_ENV isnt "cloud"
                 @watch()
-            @respawn()
+                @respawn()
+            else
+                eval(fs.readFileSync(app_target, "utf-8"))
 
 (new Launcher).run()
 

@@ -4,8 +4,9 @@ hash = require 'password-hash'
 mongoose = require 'mongoose'
 sessionStore = require("connect-mongoose")(express)
 model = require './model'
+env = require './env'
 
-mongo_uri = process.env.MONGOLAB_URI || "mongodb://localhost/chartlol"
+mongo_uri = env.mongo_uri()
 console.log "Connecting to #{mongo_uri}"
 mongoose.connect mongo_uri
 
@@ -128,5 +129,5 @@ app.post '/register', (req, res) ->
       else
         throw err
 
-app.listen parseInt(process.env.PORT, 10) || 1337
+app.listen env.listen_port()
 console.log "Listening on port #{app.address().port} in #{app.settings.env} mode"
