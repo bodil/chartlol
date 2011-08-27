@@ -1,1 +1,1 @@
-eval(require("coffee-script").compile(require("fs").readFileSync("run.coffee", "utf8")));
+eval(require("coffee-script").compile(require("fs").readFileSync("chartlol.coffee", "utf8")));
