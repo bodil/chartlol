@@ -2,7 +2,7 @@ express = require 'express'
 stylus = require 'stylus'
 hash = require 'password-hash'
 mongoose = require 'mongoose'
-sessionStore = require("connect-mongoose")(express)
+MongoStore = require 'connect-mongo'
 model = require './model'
 
 mongo_uri = process.env.MONGOLAB_URI || "mongodb://localhost/chartlol"
@@ -19,7 +19,8 @@ app.configure ->
   app.use express.cookieParser()
   app.use express.session
     secret: "foo"
-    store: new sessionStore()
+    store: new MongoStore
+      url: mongo_uri
   app.use stylus.middleware
     src: "#{__dirname}/public"
   app.use app.router

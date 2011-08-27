@@ -8,6 +8,6 @@
         "express": "",
         "stylus": "",
         "jade": "",
-        "connect-mongoose": ""
+        "connect-mongo": ""
     }
 }
