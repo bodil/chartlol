@@ -1,0 +1,2 @@
+name: "chartlol"
+spawn_command: "coffee chartlol.coffee"
