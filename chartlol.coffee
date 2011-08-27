@@ -7,7 +7,9 @@ model = require './model'
 
 mongo_uri = process.env.MONGOLAB_URI || "mongodb://localhost/chartlol"
 console.log "Connecting to #{mongo_uri}"
-mongoose.connect mongo_uri
+mongoose.connect mongo_uri, (err) ->
+  console.log if err? then "Mongoose: #{err.message}" else "Mongoose connected."
+
 
 app = express.createServer()
 app.configure ->
